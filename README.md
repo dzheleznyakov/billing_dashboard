@@ -17,8 +17,8 @@ For implementation details, see:
 This project contains both backend and frontend components.
 
 ```bash
-chmod +x setup.sh
-./setup.sh
+chmod +x ./bin/setup.sh
+./bin/setup.sh
 ```
 
 This will:

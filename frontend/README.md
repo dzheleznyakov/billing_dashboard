@@ -7,7 +7,7 @@ The following instructions are for Linux/Mac systems.
 ### Initialise the project
 
 ```bash
-chmod +x setup.sh
+chmod +x ./bin/setup.sh
 ./bin/setup.sh
 ```
 

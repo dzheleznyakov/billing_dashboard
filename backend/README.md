@@ -7,7 +7,7 @@ The following instructions are for Linux/Mac systems.
 ### Initialise the project
 
 ```bash
-chmod +x setup.sh
+chmod +x ./bin/setup.sh
 ./bin/setup.sh
 ```
 
@@ -16,7 +16,8 @@ chmod +x setup.sh
 To activate the venv environment and run the server:
 
 ```bash
-source .venv/bin/activate && uvicorn main:app --reload --log-level debug --port 5000
+source .venv/bin/activate
+uvicorn main:app --reload --log-level debug --port 5000
 ```
 
 ### Run tests
