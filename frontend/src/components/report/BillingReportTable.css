@@ -1,0 +1,27 @@
+.table-container {
+  margin-top: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: scroll;
+}
+
+.table-container th {
+  background-color: #e5f2fc;
+}
+
+.table-container th,
+.table-container td {
+  border: 1px solid #e6e5e3;
+  vertical-align: top;
+  text-align: start;
+  padding: 2px 4px;
+  min-width: 120px;
+  max-width: 240px;
+  min-height: 32px;
+}
+
+.table-container thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
