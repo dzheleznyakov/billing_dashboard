@@ -27,7 +27,8 @@ frontend/*.local
 # Editor directories and files
 **/.DS_Store
 **/.idea
-**/.vscode/*
+**/.vscode
+frontend/.vite
 frontend/!.vscode/extensions.json
 frontend/*.suo
 frontend/*.ntvs*
