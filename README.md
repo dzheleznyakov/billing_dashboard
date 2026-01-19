@@ -33,9 +33,7 @@ This will:
 ### Start the backend
 
 ```bash
-cd backend
-source .venv/bin/activate
-uvicorn main:app --reload --log-level debug --port 5000
+./bin/start_backend.sh
 ```
 
 The backend will be available at http://127.0.0.1:5000.
@@ -43,8 +41,7 @@ The backend will be available at http://127.0.0.1:5000.
 ### Start the frontend
 
 ```bash
-cd frontend
-npm run dev
+./bin/start_frontend.sh
 ```
 
 The frontend will be available at http://127.0.0.1:5001.
