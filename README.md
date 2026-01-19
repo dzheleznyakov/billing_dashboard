@@ -53,7 +53,7 @@ The frontend will be available at http://127.0.0.1:5001.
 
 ---
 
-## Backend – Design Decisions
+## Backend: Design Decisions
 
 ### API shape and contract
 
@@ -109,3 +109,67 @@ A natural next step would be to resolve reports **in parallel with bounded concu
 - No persistent storage was introduced; all data is derived from upstream APIs.
 - No authentication or rate limiting was added, as endpoints are explicitly unauthenticated in the task.
 - Validation is intentionally minimal and focused on contract safety rather than full schema enforcement.
+
+---
+
+---
+
+## Frontend: Design Decisions
+
+### Data fetching and resilience (React Query)
+
+- Usage data is fetched from the backend via `fetchUsage()` and managed with TanStack React Query (`useQuery`).
+- Query configuration is tuned for a dashboard-style UI:
+  - `staleTime` is set to reduce unnecessary refetching while still allowing periodic refresh on focus/reconnect.
+  - Bounded retries are enabled with exponential backoff to smooth transient network/API failures.
+
+### Table implementation (TanStack Table)
+
+- The table is built with TanStack Table to avoid re-implementing sorting, row models, and header state handling.
+- Only the required columns are sortable (Report Name, Credits Used), matching the task spec.
+- Sorting supports:
+  - tri-state toggle per column (asc → desc → none),
+  - multi-column sorting (Shift-click / Shift+Enter), and
+  - stable visual indicators for current sort direction.
+
+### URL-synchronised sorting
+
+- Sorting state is serialised into a sorting query parameter so the URL can be shared and reproduce the same table view.
+- The query param format is compact: `col:dir;col:dir`.
+- Input is treated as untrusted:
+  - malformed pairs are ignored,
+  - unknown columns are ignored,
+  - any direction other than desc is treated as asc.
+- URL updates use history.replaceState to avoid navigation and keep back/forward behaviour predictable.
+
+### Bar chart aggregation (Recharts)
+
+- The bar chart aggregates credits per day on the client:
+- group by day and sorts chronologically,
+- sum `credits_used`.
+
+Recharts was chosen to keep the chart implementation short and readable while meeting the “simple bar chart” requirement.
+
+### Date handling
+
+- Timestamps are formatted as follows:
+  - `dd-MM-yyyy HH:mm` in the table;
+  - `dd-MM-yyyy` in the bar chart
+
+### Accessibility considerations
+
+- Sortable headers are keyboard-accessible.
+- `Enter` / `Space` triggers sorting to match expected keyboard interaction.
+
+### Styling and layout
+
+- Styling is implemented with plain CSS (no Tailwind / component library) to keep the solution lightweight and easy to review.
+- Layout uses `flexbox` with explicit `min-height: 0` on `flex` children to ensure the table area can scroll without overflowing the page.
+- Sticky table header is enabled to keep column context visible during scrolling.
+
+### Scope decisions
+
+- Client-side sorting is used for the table (the dataset is assumed small for this exercise); no server-side pagination or sorting was added.
+- Client-side aggregation is used for the bar chart (the dataset is assumed small for this exercise); no server-side aggregation was added.
+- No global state library (Redux, etc.) was introduced; component-level state plus TanStack Query/Table state is sufficient.
+- Tests focus on key rendering states (loading / error / success) and core table interactions rather than exhaustive UI or visual testing.
